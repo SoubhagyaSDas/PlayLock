@@ -1,14 +1,21 @@
 // Function to check if we are in playlist mode
 function isPlaylistMode() {
-    return window.location.href.includes('list=');
+    const inPlaylistMode = window.location.href.includes('list='); // Check if URL contains 'list=' indicating a playlist
+    console.log("In Playlist Mode:", inPlaylistMode); // Debugging line
+    return inPlaylistMode;
 }
 
 // Function to remove suggestions and comments while in playlist mode
 function removeSuggestionsAndComments() {
+    console.log("removeSuggestionsAndComments called"); // Debugging line
 
     const upNext = document.querySelector('#related'); // YouTube related video suggestions
     const endscreen = document.querySelector('.ytp-endscreen-content'); // Endscreen suggestions on YouTube
     const comments = document.querySelector('#comments'); // YouTube comments section
+
+    console.log("upNext:", upNext); // Debugging line
+    console.log("endscreen:", endscreen); // Debugging line
+    console.log("comments:", comments); // Debugging line
 
     chrome.storage.sync.get(['removeSuggestions', 'removeComments'], function(data) {
         console.log("Data retrieved:", data); // Debugging line
@@ -18,8 +25,12 @@ function removeSuggestionsAndComments() {
         if (data.removeSuggestions && endscreen) {
             endscreen.style.display = 'none'; // Hide suggestions at the end of the video
         }
-        if (data.removeComments && comments) { 
-            comments.style.display = 'none'; // Hide the comments section
+        if (data.removeComments) {
+            if (comments) {
+                comments.style.display = 'none'; // Hide the comments section
+            } else {
+                console.warn("Comments section not found."); // Warning log if comments not found
+            }
         }
     });
 }
