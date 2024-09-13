@@ -11,7 +11,9 @@ chrome.storage.sync.get(['focusModeEnabled', 'removeSuggestions', 'removeComment
 
 // Save the state when toggled
 toggleFocusMode.addEventListener('change', function() {
-    chrome.storage.sync.set({ focusModeEnabled: toggleFocusMode.checked });
+    chrome.storage.sync.set({ focusModeEnabled: toggleFocusMode.checked }, function() {
+        chrome.runtime.sendMessage({ type: 'showNotification', message: toggleFocusMode.checked ? 'Focus Mode Enabled' : 'Focus Mode Disabled' });
+    });
 });
 
 removeSuggestions.addEventListener('change', function() {
